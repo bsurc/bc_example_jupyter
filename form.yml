@@ -32,16 +32,16 @@ attributes:
   # command that launches the Jupyter notebook within the batch job
   extra_jupyter_args: ""
   bc_account: ""
-  bc_queue: "testondemand"
-  bc_num_slots: 
-    label: "Number of processors"
-    value: 4
-    min: 1
-    max: 48
+  bc_queue: "ondemand"
+  bc_num_slots: 4
+  #  label: "Number of processors"
+  #  value: 4
+  #  min: 1
+  #  max: 48
   bc_num_hours:
     value: 1
     min: 1
-    max: 8
+    max: 4
 
 # All of the attributes that make up the Dashboard form (in respective order),
 # and made available to the submit configuration file and the template ERB
