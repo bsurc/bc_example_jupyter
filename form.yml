@@ -14,6 +14,7 @@ form:
   - extra_jupyter_args
   - bc_account
   - bc_queue
+  - node_type
   - bc_num_hours
   - num_cores
   - jupyterlab_switch
