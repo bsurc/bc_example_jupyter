@@ -6,13 +6,19 @@
 
 # **MUST** set cluster id here that matches cluster configuration file located
 # under /etc/ood/config/clusters.d/*.yml
-# @example Use the Owens cluster at Ohio Supercomputer Center
 #     cluster: "owens"
 cluster: "borah"
 cacheable: false
-
-# Define attribute values that aren't meant to be modified by the user within
-# the Dashboard form
+form:
+  - modules
+  - extra_jupyter_args
+  - bc_account
+  - bc_queue
+  - node_type
+  - bc_num_hours
+  - num_cores
+  - jupyterlab_switch
+  - bc_email_on_started
 attributes:
   modules: "jupyter/4.9.2"
 
@@ -21,11 +27,31 @@ attributes:
   extra_jupyter_args: ""
   bc_account: ""
   bc_queue: "ondemand"
-  bc_num_slots: 4
-  #  label: "Number of processors"
-  #  value: 4
-  #  min: 1
-  #  max: 48
+  num_cores:
+    widget: hidden_field
+  node_type:
+    value: "CPU"
+    widget: select
+    label: "Node type"
+    help: |
+      - **CPU** <br>
+        These are standard Borah compute nodes with 48 CPU cores and 186 GB
+        of memory.
+        By selecting a "CPU" session, you will be given 4 CPU cores.
+      - **GPU** <br>
+        These are nodes with 2 [NVIDIA Tesla P100 GPUs], 28 CPU cores, and
+        251 GB of memory.
+        By selecting a "GPU" session, you will be given 14 cores and 1 GPU.
+        [NVIDIA Tesla P100 GPU]: http://www.nvidia.com/object/tesla-p100.html
+    options:
+      - [
+          "CPU",     "cpu",
+          data-set-num-cores: 4
+        ]
+      - [
+          "GPU",     "gpu",
+          data-set-num-cores: 14
+        ]
   bc_num_hours:
     value: 1
     min: 1
@@ -36,13 +62,3 @@ attributes:
     label: Use JupyterLab instead of Jupyter Notebook?
     help: |
       JupyterLab is the next generation of Jupyter with an IDE-like experience, and is completely compatible with existing Jupyter Notebooks.
-
-form:
-  - modules
-  - extra_jupyter_args
-  - bc_account
-  - bc_queue
-  - bc_num_hours
-  - bc_num_slots
-  - jupyterlab_switch
-  - bc_email_on_started
