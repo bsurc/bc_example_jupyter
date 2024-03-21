@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-<%- gpu = context.node_type.include?("gpu") -%>
+<%- 
+    gpu_queues = ['ondemand-p100', 'cryogars']
+    gpu = gpu_queues.include?(context.custom_queue) 
+-%>
 
 # Benchmark info
 echo "TIMING - Starting main script at: $(date)"

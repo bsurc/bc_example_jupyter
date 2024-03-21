@@ -4,6 +4,6 @@ category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
-  This app will launch a Jupyter Notebook server on one or more nodes.
-  
+  This app will launch a Jupyter Notebook server on a node.
+
   To learn how to set up your conda environments to work with this notebook, please refer to [our documentation](https://bsu-docs.readthedocs.io/en/latest/conda/#using-a-conda-environment-with-open-ondemand).
