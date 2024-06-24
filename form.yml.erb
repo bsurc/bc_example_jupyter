@@ -1,7 +1,8 @@
 <%-
 require 'open3'
 begin
-    oodqueues = ['ondemand', 'ondemand-p100', 'cryogars', 'classroomgpu']
+    oodqueues = ['classroomgpu', 'cryogars', 'ondemand', 'ondemand-p100']
+    maxcores = [14, 32, 4, 14]
     # Command to Run
     script = '/cm/shared/apps/slurm/current/bin/sinfo -h --format="%P"'
     # Create a partitions array to dynamically populate the queues associated
@@ -28,11 +29,11 @@ end
 -%>
 ---
 cluster: "borah"
-cacheable: false
 form:
   - modules
   - extra_jupyter_args
   - custom_queue
+  - num_cores
   - bc_num_hours
   - jupyterlab_switch
   - bc_email_on_started
@@ -46,33 +47,36 @@ attributes:
       - **classroomgpu** <br>
         These are HPC nodes with 2 [NVIDIA Tesla P100 GPUs], 28 cores, and
         251 GB of memory.
-        By selecting the "classroomgpu" partition, you will be given 14 cores
-        and 1 GPU.
+        By selecting the "classroomgpu" partition, you will be given up to 14
+        cores and 1 GPU.
         [NVIDIA Tesla P100 GPUs]: http://www.nvidia.com/object/tesla-p100.html
     <%- end -%>
     <%- if partitions.include?("cryogars")-%>
       - **cryogars** <br>
         This node has 2 [NVIDIA A30 GPUs], 64 cores, and 1 TB of memory.
-        By selecting the "cryogars" partition, you will be given 32 cores
+        By selecting the "cryogars" partition, you will be given up to 32 cores
         and 1 GPU.
         [NVIDIA A30 GPUs]: https://www.nvidia.com/a30
     <%- end -%>
       - **ondemand** <br>
         Standard Borah nodes have 48 cores and 186 GB of memory.
-        By selecting the "ondemand" partition, you will be given 4 CPU cores.
+        By selecting the "ondemand" partition, you will be given up to 4 cores.
       - **ondemand-p100** <br>
         These are HPC nodes with 2 [NVIDIA Tesla P100 GPUs], 28 cores, and
         251 GB of memory.
-        By selecting the "ondemand-p100" partition, you will be given 14 cores
-        and 1 GPU.
+        By selecting the "ondemand-p100" partition, you will be given up to 14
+        cores and 1 GPU.
         [NVIDIA Tesla P100 GPUs]: http://www.nvidia.com/object/tesla-p100.html
     <%- if partition_error || partitions.blank?-%>
       <div class="text-danger">Error while fetching Partition. Please contact
       support!</div>
     <%- else -%>
     options:
-    <%- partitions.each do |q| -%>
-      - [ "<%= q %>", "<%= q %>" ]
+    <%- partitions.zip(maxcores).each do |q, maxcore| -%>
+        - [
+            "<%= q %>", "<%= q %>",
+            data-max-num-cores: <%= maxcore %>
+          ]
     <%- end -%>
     <%- end -%>
 
@@ -80,7 +84,11 @@ attributes:
   # command that launches the Jupyter notebook within the batch job
   extra_jupyter_args: ""
   num_cores:
-    widget: hidden_field
+    widget: number_field
+    label: "Number of cores"
+    value: 1
+    min: 1
+    max: 1
   bc_num_hours:
     value: 1
     min: 1
