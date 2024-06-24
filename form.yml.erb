@@ -3,6 +3,7 @@ require 'open3'
 begin
     oodqueues = ['classroomgpu', 'cryogars', 'ondemand', 'ondemand-p100']
     maxcores = [14, 32, 4, 14]
+    hasgpu = [true, true, false, true]
     # Command to Run
     script = '/cm/shared/apps/slurm/current/bin/sinfo -h --format="%P"'
     # Create a partitions array to dynamically populate the queues associated
@@ -34,6 +35,7 @@ form:
   - extra_jupyter_args
   - custom_queue
   - num_cores
+  - enable_gpu
   - bc_num_hours
   - jupyterlab_switch
   - bc_email_on_started
@@ -72,10 +74,14 @@ attributes:
       support!</div>
     <%- else -%>
     options:
-    <%- partitions.zip(maxcores).each do |q, maxcore| -%>
+    <%- partitions.zip(maxcores,hasgpu).each do |q, maxcore, gpu| -%>
         - [
             "<%= q %>", "<%= q %>",
-            data-max-num-cores: <%= maxcore %>
+            data-max-num-cores: <%= maxcore %>,
+            <%- if !gpu -%>
+            data-hide-enable-gpu: true,
+            data-set-enable-gpu: 0
+            <%- end -%>
           ]
     <%- end -%>
     <%- end -%>
@@ -89,6 +95,10 @@ attributes:
     value: 1
     min: 1
     max: 1
+  enable_gpu:
+    widget: check_box
+    label: "Enable GPU"
+    help:
   bc_num_hours:
     value: 1
     min: 1
@@ -98,4 +108,6 @@ attributes:
     value: 1
     label: Use JupyterLab instead of Jupyter Notebook?
     help: |
-      JupyterLab is the next generation of Jupyter with an IDE-like experience, and is completely compatible with existing Jupyter Notebooks.
+      JupyterLab is the next generation of Jupyter with an IDE-like experience,
+      and is completely compatible with existing Jupyter Notebooks.
+
