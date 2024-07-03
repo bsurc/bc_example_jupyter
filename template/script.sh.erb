@@ -10,12 +10,12 @@ cd "${HOME}"
 # Start Jupyter Notebook Server
 #
 
-<%- unless context.modules.blank? -%>
+<%- unless context.version.blank? -%>
 # Purge the module environment to avoid conflicts
 module purge
 
 # Load the require modules
-module load <%= context.modules %>
+module load <%= context.version %> slurm
 
 # List loaded modules
 module list

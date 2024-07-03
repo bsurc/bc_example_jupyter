@@ -31,7 +31,7 @@ end
 ---
 cluster: "borah"
 form:
-  - modules
+  - version
   - extra_jupyter_args
   - custom_queue
   - num_cores
@@ -40,7 +40,17 @@ form:
   - jupyterlab_switch
   - bc_email_on_started
 attributes:
-  modules: "jupyter/4.9.2"
+  version:
+    widget: select
+    label: "Jupyter version"
+    help: "This defines the version of Jupyter you want to load."
+    options:
+      - [
+          "4.9.2", "jupyter/4.9.2",
+        ]
+      - [
+          "5.0.0", "jupyter/5.0.0",
+        ]
   custom_queue:
     label: Partition
     widget: select
