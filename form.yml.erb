@@ -39,6 +39,7 @@ form:
   - bc_num_hours
   - jupyterlab_switch
   - bc_email_on_started
+  - extra_commands
 attributes:
   version:
     widget: select
@@ -99,6 +100,12 @@ attributes:
   # Any extra command line arguments to feed to the `jupyter notebook ...`
   # command that launches the Jupyter notebook within the batch job
   extra_jupyter_args: ""
+  extra_commands:
+    widget: text_area
+    label: "Additional commands to run"
+    help: |
+      Additional commands to run, e.g., loading a module or setting an
+      environment variable. If you're not sure, just leave this blank.
   num_cores:
     widget: number_field
     label: "Number of cores"
