@@ -16,10 +16,14 @@ module purge
 
 # Load the require modules
 module load <%= context.version %> slurm
+<%- end -%>
+
+<%- unless context.extra_commands.blank? -%>
+<%= context.extra_commands %>
+<%- end -%>
 
 # List loaded modules
 module list
-<%- end -%>
 
 # Benchmark info
 echo "TIMING - Starting jupyter at: $(date)"
