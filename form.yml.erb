@@ -1,9 +1,9 @@
 <%-
 require 'open3'
 begin
-    oodqueues = ['classroomgpu', 'cryogars', 'ondemand', 'ondemand-p100']
-    maxcores = [14, 32, 4, 14]
-    hasgpu = [true, true, false, true]
+    oodqueues = ['classroomgpu', 'cryogars', 'ondemand', 'ondemand-p100', 'ondemand-l40']
+    maxcores = [14, 32, 4, 14, 16]
+    hasgpu = [true, true, false, true, true]
     # Command to Run
     script = '/cm/shared/apps/slurm/current/bin/sinfo -h --format="%P"'
     # Create a partitions array to dynamically populate the queues associated
@@ -65,11 +65,11 @@ attributes:
     help: |
     <%- if partitions.include?("classroomgpu")-%>
       - **classroomgpu** <br>
-        These are HPC nodes with 2 [NVIDIA Tesla P100 GPUs], 28 cores, and
-        251 GB of memory.
+        These nodes have 2 [NVIDIA Tesla P100 GPUs], 28 cores, and 251 GB of
+        memory.
         By selecting the "classroomgpu" partition, you will be given up to 14
         cores and 1 GPU.
-        [NVIDIA Tesla P100 GPUs]: http://www.nvidia.com/object/tesla-p100.html
+        [NVIDIA Tesla P100 GPUs]: https://www.nvidia.com/en-in/data-center/tesla-p100/
     <%- end -%>
     <%- if partitions.include?("cryogars")-%>
       - **cryogars** <br>
@@ -79,14 +79,19 @@ attributes:
         [NVIDIA A30 GPUs]: https://www.nvidia.com/a30
     <%- end -%>
       - **ondemand** <br>
-        Standard Borah nodes have 48 cores and 186 GB of memory.
+        These nodes have 48 cores and 186 GB of memory.
         By selecting the "ondemand" partition, you will be given up to 4 cores.
       - **ondemand-p100** <br>
-        These are HPC nodes with 2 [NVIDIA Tesla P100 GPUs], 28 cores, and
-        251 GB of memory.
+        These nodes have 2 [NVIDIA Tesla P100 GPUs], 28 cores, and 251 GB of
+        memory.
         By selecting the "ondemand-p100" partition, you will be given up to 14
         cores and 1 GPU.
-        [NVIDIA Tesla P100 GPUs]: http://www.nvidia.com/object/tesla-p100.html
+        [NVIDIA Tesla P100 GPUs]: https://www.nvidia.com/en-in/data-center/tesla-p100/
+      - **ondemand-l40** <br>
+        These nodes have 4 [NVIDIA L40 GPUs], 64 cores, and 512 GB of memory.
+        By selecting the "ondemand-l40" partition, you will be given up to 16
+        cores and 1 GPU.
+        [NVIDIA L40 GPUs]: https://www.nvidia.com/en-us/data-center/l40/
     <%- if partition_error || partitions.blank?-%>
       <div class="text-danger">Error while fetching Partition. Please contact
       support!</div>
