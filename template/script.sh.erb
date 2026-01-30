@@ -18,10 +18,6 @@ module purge
 module load <%= context.version %> slurm
 <%- end -%>
 
-<%- unless context.extra_commands.blank? -%>
-<%= context.extra_commands %>
-<%- end -%>
-
 # List loaded modules
 module list
 
