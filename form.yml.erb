@@ -1,38 +1,40 @@
 <%-
 require 'open3'
 begin
-    oodqueues = ['classroomgpu', 'cryogars', 'ondemand', 'ondemand-p100', 'ondemand-l40']
-    maxcores = [14, 32, 4, 14, 16]
-    hasgpu = [true, true, false, true, true]
-    # Command to Run
-    script = '/cm/shared/apps/slurm/current/bin/sinfo -h --format="%P"'
-    # Create a partitions array to dynamically populate the queues associated
-    # with the user
-    partitions = []
-    pmaxcores = []
-    phasgpu = []
-    # Store the output, error, status
-    output, status = Open3.capture2('bash', stdin_data: script)
-    # puts status
-    if status.success?
-        # Add it to the custom_envs array by splitting the output at '\n'.
-        output.split("\n").each do |queue|
-            if oodqueues.include?(queue)
-                qindex = oodqueues.index(queue)
-                queue = queue.gsub("*", "")
-                partitions.push(queue)
-                pmaxcores.push(maxcores[qindex])
-                phasgpu.push(hasgpu[qindex])
-            end
-        end
-        puts partitions
-        puts pmaxcores
-        puts phasgpu
-    else
-        partition_error = "Error"
+  oodqueues = [
+    'classroomgpu', 'cryogars', 'ondemand', 'ondemand-l40', 'ondemand-p100'
+  ]
+  maxcores = [14, 32, 4, 16, 14]
+  hasgpu = [true, true, false, true, true]
+  # Command to Run
+  script = '/cm/shared/apps/slurm/current/bin/sinfo -h --format="%P"'
+  # Create a partitions array to dynamically populate the queues associated
+  # with the user
+  partitions = []
+  pmaxcores = []
+  phasgpu = []
+  # Store the output, error, status
+  output, status = Open3.capture2('bash', stdin_data: script)
+  # puts status
+  if status.success?
+    # Add it to the custom_envs array by splitting the output at '\n'.
+    output.split("\n").each do |queue|
+      if oodqueues.include?(queue)
+        qindex = oodqueues.index(queue)
+        queue = queue.gsub("*", "")
+        partitions.push(queue)
+        pmaxcores.push(maxcores[qindex])
+        phasgpu.push(hasgpu[qindex])
+      end
     end
+    puts partitions
+    puts pmaxcores
+    puts phasgpu
+  else
+    partition_error = "Error"
+  end
 rescue => e
-    partition_error = e.message.strip
+  partition_error = e.message.strip
 end
 -%>
 ---
