@@ -46,19 +46,15 @@ form:
   - bc_num_hours
   - jupyterlab_switch
   - bc_email_on_started
-  - extra_commands
 attributes:
   version:
     widget: select
     label: "Jupyter version"
     help: "This defines the version of Jupyter you want to load."
+    value: "jupyter/5.0.0"
     options:
-      - [
-          "4.9.2", "jupyter/4.9.2",
-        ]
-      - [
-          "5.0.0", "jupyter/5.0.0",
-        ]
+      - [ "4.9.2", "jupyter/4.9.2" ]
+      - [ "5.0.0", "jupyter/5.0.0" ]
   custom_queue:
     label: Partition
     widget: select
@@ -101,6 +97,7 @@ attributes:
         - [
             "<%= q %>", "<%= q %>",
             data-max-num-cores: <%= maxcore %>,
+            data-set-num-cores: <%= maxcore %>,
             <%- if !gpu -%>
             data-hide-enable-gpu: true,
             data-set-enable-gpu: 0
@@ -112,24 +109,16 @@ attributes:
   # Any extra command line arguments to feed to the `jupyter notebook ...`
   # command that launches the Jupyter notebook within the batch job
   extra_jupyter_args: ""
-  extra_commands:
-    widget: text_area
-    label: "Additional commands to run"
-    help: |
-      Additional commands to run, e.g., loading a module or setting an
-      environment variable. If you're not sure, just leave this blank.
   num_cores:
     widget: number_field
     label: "Number of cores"
-    value: 1
     min: 1
     max: 1
   enable_gpu:
     widget: check_box
     label: "Enable GPU"
-    help:
   bc_num_hours:
-    value: 1
+    value: 4
     min: 1
     max: 4
   jupyterlab_switch:
